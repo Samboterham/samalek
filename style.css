@@ -12,6 +12,7 @@ body{
     justify-content: flex-start;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    align-items: center;
   
 }
 
@@ -20,7 +21,11 @@ body{
 }
 
 .grid img {
-    width: 1200px;
+    width: 80vmax;
     height: auto;
     
 }
+/* 
+.card{
+    width: 100vmax;
+}  */
