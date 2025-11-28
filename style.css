@@ -1,31 +1,271 @@
-body{
-    background-color: rgba(255, 255, 255, 0.756);
+* {box-sizing: border-box;}
+
+body {
+    background-color: rgba(255, 255, 255, 0.751);
     padding: 0px;
     margin: 0px;
+    height: 100%;
+    overflow-y: hidden;
+    overflow-x: auto;
+
 }
 
-.grid{
+header {
+    background-color: rgb(215, 215, 215);
+    max-height: 100%;
+}
+
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .18s ease, visibility .18s;
+    z-index: 9990;
+}
+
+.overlay.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.header-content {
+    height: 80px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.ua-logo {
+    width: 80px;
+    margin-right: 120px;
+}
+
+.grid {
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
-    padding: 30px;
+    padding: 20px;
     justify-content: flex-start;
     scrollbar-width: none;
     -ms-overflow-style: none;
     align-items: center;
-  
+    overflow-y: scroll;
+
 }
 
-.grid::-webkit-scrollbar {
+/* .grid::-webkit-scrollbar {
     display: none;
-}
+} */
 
 .grid img {
     width: 80vmax;
     height: auto;
-    
+    border-radius: 5px;
+
 }
-/* 
-.card{
-    width: 100vmax;
-}  */
+
+.card {
+    position: relative;
+    perspective: 1200px;
+
+    overflow: visible;
+}
+
+.card {
+    position: relative;
+    perspective: 1200px;
+
+    overflow: visible;
+}
+
+
+.hotspot {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: rgb(255, 179, 0);
+    cursor: pointer;
+    border: 0px;
+    transition: ease-in-out 0.5s;
+    font-size: 15px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    transform: scale(1);
+    box-shadow: black 0px 0px 20px 1px;
+
+}
+
+.hotspot:hover {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgb(255, 179, 0);
+    cursor: pointer;
+    font-size: 30px;
+    box-shadow: rgba(192, 134, 0, 0.603) 0px 0px 0px 4px;
+
+}
+
+.plus {
+    position: relative;
+    width: 15px;
+    height: 16px;
+}
+
+.plus::before,
+.plus::after {
+    content: "";
+    position: absolute;
+    background: rgb(0, 0, 0);
+    border-radius: 4px;
+}
+
+.plus::before {
+    width: 4px;
+    height: 16px;
+    left: 48%;
+    top: 0;
+    transform: translateX(-50%);
+}
+
+
+.plus::after {
+    width: 14px;
+    height: 4px;
+    left: 0;
+    top: 40%;
+    transform: translateY(-50%);
+}
+
+.plus::after {
+    width: 14px;
+    height: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.modal {
+    display: none;
+    position: absolute;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+
+
+.modal::-webkit-scrollbar {
+    display: none;
+}
+
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    max-width: 80%;
+    text-align: center;
+}
+
+.close {
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    border: none;
+    background-color: white;
+}
+
+
+.card {
+    border-radius: 5px;
+
+}
+
+.info {
+    border-radius: 50px;
+    background-color: blue;
+
+}
+
+.clickable-image img {
+    width: 20px;
+}
+
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(90vw, 900px);
+    max-height: calc(100vh - 80px);
+    padding: 18px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+    display: none;
+    z-index: 9999;
+    overflow: auto;
+}
+
+.popup.show {
+    display: block;
+}
+
+
+.popup .popup-content {
+    color: #222;
+}
+
+.popup-item {
+    display: none;
+}
+
+.popup-item.show {
+    display: block;
+}
+
+.toggle-magnify {
+    position: absolute;
+    top: 10px;
+    right: 50px;
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+.toggle-magnify:hover {
+    background: #0056b3;
+}
+
+.img-magnifier-container {
+  position: relative;
+}
+
+.img-magnifier-glass {
+  position: absolute;
+  border: 3px solid #000;
+  border-radius: 50%;
+  cursor: none;
+  /*Set the size of the magnifier glass:*/
+  width: 100px;
+  height: 100px;
+}
+
