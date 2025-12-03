@@ -1,136 +1,73 @@
-<?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "ua_database";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error)
-    die("Connection failed: " . $conn->connect_error);
-
-
-$sql = "SELECT * FROM ua_informatie";
-
-$result = $conn->query($sql);
-?>
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
+    <title>Welkom - Foto Slider</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="index.js" defer></script>
 </head>
-<header>
-    <div class="header-container">
-        <div class="header-content">
-
-            <button id="openColofon" class="colofon-btn" type="button" aria-label="Open colofon"
-                title="Colofon">i</button>
-            <a href="https://hetutrechtsarchief.nl">
-                <img class="ua-logo" src="assets/images/ualogo.png">
-            </a>
-        </div>
-
-</header>
 
 <body>
-    <div class="grid">
-        <?php while ($row = $result->fetch_assoc()): ?>
-            <?php
-            $image_id = $row['id'];
-            $sql_1 = "SELECT * FROM ua_extrainformatie WHERE id_hoofdInfo = $image_id";
-            $hotspots = $conn->query($sql_1);
-            ?>
+    <div class="container">
+        <div class="content">
+            <header>
+                <h1>Welkom</h1>
+            </header>
 
-            <div class="card">
-                <div class="card-inner">
-                    <div class="card-front">
-                        <!-- attach useful data-* attributes so JS can populate the global popup -->
-                        <img src="<?= htmlspecialchars($row['image']) ?>" alt="<?= htmlspecialchars($row['id']) ?>"
-                            data-id="<?= $row['id'] ?>"
-                            data-catalogus="<?= htmlspecialchars($row['catalogusnummer'] ?? '') ?>"
-                            data-beschrijving="<?= htmlspecialchars($row['beschrijving'] ?? '') ?>">
+            <main>
+                <section class="intro">
+                    <p>Ontdek onze collectie foto's en beschrijvingen met behulp van onze interactieve slider.</p>
+                </section>
 
-                        <?php while ($h = $hotspots->fetch_assoc()): ?>
-                            <button class="hotspot"
-                                style="left: <?= $h['punt_positie_x'] ?>%; top: <?= $h['punt_positie_y'] ?>%;"
-                                data-text="<?= htmlspecialchars($h['informatie']) ?>"
-                                data-text-ctl="<?= htmlspecialchars($h['catalogusnummer']) ?>"
-                                data-img="<?= htmlspecialchars($h['image']) ?>">
-                                <div class="plus"></div>
-                            </button>
-                        <?php endwhile; ?>
-                    </div>
-                </div>
-            </div>
-        <?php endwhile; ?>
-    </div>
-
-
-    <div class="overlay" id="globalOverlay" aria-hidden="true"></div>
-    <div id="globalPopup" class="popup" role="dialog" aria-modal="true" aria-hidden="true">
-        <img class="magnify">
-        <button id="closePopup" class="close" aria-label="Close">&times;</button>
-        <button id="toggleMagnify" class="toggle-magnify" aria-label="Toggle Magnifier">🔍</button>
-
-        <div id="popupContent" class="popup-content">
-            <?php mysqli_data_seek($result, 0); ?>
-            <?php while ($row = $result->fetch_assoc()): ?>
-                <div class="popup-item" data-id="<?= $row['id'] ?>">
-                    <div class="img-magnifier-container">
-                        <img id="popup-img-<?= $row['id'] ?>" src="<?= htmlspecialchars($row['image']) ?>" alt=""
-                            style="max-width:100%; height:auto; display:block; margin-bottom:12px;">
-                    </div>
-                    <?php if (!empty($row['catalogusnummer'])): ?>
-                        <div style="margin-top:8px"><strong>Catalogusnummer:</strong>
-                            <?= htmlspecialchars($row['catalogusnummer']) ?></div>
-                    <?php endif; ?>
-                    <?php if (!empty($row['beschrijving'])): ?>
-                        <div style="margin-top:8px"><strong>Beschrijving:</strong> <?= htmlspecialchars($row['beschrijving']) ?>
+                <section class="instructions">
+                    <h2>Hoe de website te gebruiken</h2>
+                    <div class="instructions-list">
+                        <div class="instruction-item">
+                            <div class="instruction-number">1</div>
+                            <div class="instruction-content">
+                                <h3>Navigatie door slider</h3>
+                                <p>Sleep naar links of rechts om door de foto's te bladeren. Klik op een foto om meer informatie te zien.</p>
+                            </div>
                         </div>
-                    <?php else: ?>
-                        <div style="margin-top:8px">No description available.</div>
-                    <?php endif; ?>
-                </div>
-            <?php endwhile; ?>
-        </div>
-    </div>
 
-    <div id="hotspotModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-text">
-                <b><label>Informatie:</label></b>
-                <p id="modalText"></p>
-                <div id="modalCatalog" style="display:none;">
-                    <b><label>Catalogusnummer:</label></b>
-                    <p id="modalTextCtl"></p>
-                </div>
-            </div>
-            <div class="modal-image">
-                <img id="modalImage" style="display:none; max-width:100%; height:auto;">
-            </div>
-            <span id="closeModal" class="close">&times;</span>
-        </div>
-    </div>
+                        <div class="instruction-item">
+                            <div class="instruction-number">2</div>
+                            <div class="instruction-content">
+                                <h3>Foto Informatie</h3>
+                                <p>Elke foto bevat een catalogusnummer en beschrijving. Hover over de foto's voor extra details.</p>
+                            </div>
+                        </div>
 
-    <div id="colofonModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-text">
-                <b><label>Colofon:</label></b>
-                <p><strong>Vervaardiger:</strong> Bos, J., tekenaar/graficus</p>
-                <p><strong>Datering:</strong> 1859</p>
-                <p><strong>Materiaalsoort:</strong> Prent</p>
-                <p><strong>Uitgever:</strong> Herfkens en Zoon, Wed., uitgever</p>
-            </div>
-            <span id="closeColofon" class="close">&times;</span>
+                        <div class="instruction-item">
+                            <div class="instruction-number">3</div>
+                            <div class="instruction-content">
+                                <h3>Inloggen</h3>
+                                <p>Klik op de "Login" knop in de rechterbovenhoek van de slider pagina om in te loggen met uw gegevens.</p>
+                            </div>
+                        </div>
+
+                        <div class="instruction-item">
+                            <div class="instruction-number">4</div>
+                            <div class="instruction-content">
+                                <h3>Responsief Design</h3>
+                                <p>De website is ontworpen voor alle apparaten. Geniet ervan op desktop, tablet of mobiel.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="button-container">
+                    <button class="start-button" onclick="startSlider()">Start</button>
+                </div>
+            </main>
+
+            <footer>
+                <p>&copy; 2025 Foto Slider. Alle rechten voorbehouden.</p>
+            </footer>
         </div>
     </div>
 </body>
 
 </html>
-
-<?php $conn->close(); ?>
