@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('hotspotModal');
     const modalText = document.getElementById('modalText');
     const modalTextCtl = document.getElementById('modalTextCtl');
+    const modalCatalog = document.getElementById('modalCatalog');
     const modalImage = document.getElementById('modalImage');
     const closeModal = document.getElementById('closeModal');
 
@@ -12,17 +13,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
             modalText.textContent = hotspot.dataset.text;
 
-            if (hotspot.dataset.img) {
+            const modalImageDiv = document.querySelector('.modal-image'); // get the container
+
+            // only show image if data-img exists and is not empty
+            if (hotspot.dataset.img && hotspot.dataset.img.trim()) {
                 modalImage.src = hotspot.dataset.img;
                 modalImage.style.display = 'block';
-
+                if (modalImageDiv) modalImageDiv.style.display = 'block'; // show image container
                 modalTextCtl.textContent = hotspot.dataset.textCtl || hotspot.dataset.textctl || '';
             } else {
                 modalImage.style.display = 'none';
+                if (modalImageDiv) modalImageDiv.style.display = 'none'; // hide image container
                 modalTextCtl.textContent = '';
             }
 
+            if (modalCatalog) modalCatalog.style.display = modalTextCtl.textContent ? 'block' : 'none';
+
             modal.style.display = 'block';
+            document.documentElement.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden';
         });
     });
 
@@ -31,9 +40,40 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.style.display = 'none';
     });
 
-    window.addEventListener('click', (e) => {
-        if (e.target === modal) modal.style.display = 'none';
+    modal.addEventListener('click', (e) => {
+        if (!e.target.closest('.modal-content')) modal.style.display = 'none';
     });
+
+    // Colofon modal functionality
+    const openColofon = document.getElementById('openColofon');
+    const closeColofon = document.getElementById('closeColofon');
+    const colofonModal = document.getElementById('colofonModal');
+
+    if (openColofon && colofonModal) {
+        openColofon.addEventListener('click', () => {
+            colofonModal.style.display = 'block';
+            document.documentElement.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden';
+        });
+    }
+
+    if (closeColofon && colofonModal) {
+        closeColofon.addEventListener('click', () => {
+            colofonModal.style.display = 'none';
+            document.documentElement.style.overflow = '';
+            document.body.style.overflow = '';
+        });
+    }
+
+    if (colofonModal) {
+        colofonModal.addEventListener('click', (e) => {
+            if (!e.target.closest('.modal-content')) {
+                colofonModal.style.display = 'none';
+                document.documentElement.style.overflow = '';
+                document.body.style.overflow = '';
+            }
+        });
+    }
 
 });
 
@@ -63,6 +103,21 @@ document.addEventListener('DOMContentLoaded', () => {
             const popupItem = document.querySelector(`.popup-item[data-id="${imageId}"]`);
             if (popupItem) {
                 popupItem.classList.add('show');
+
+                // magnifier: cleanup & init for this popup image if enabled
+                document.querySelectorAll('.img-magnifier-glass').forEach(g => g.remove());
+                if (magnifierEnabled) {
+                    const popupImg = popupItem.querySelector('img');
+                    if (popupImg) {
+                        if (!popupImg.id) popupImg.id = 'popup-img-' + (popupItem.dataset.id || imageId);
+                        if (popupImg.complete && popupImg.naturalWidth) {
+                            magnify(popupImg.id, 3);
+                        } else {
+                            const onLoad = () => { popupImg.removeEventListener('load', onLoad); magnify(popupImg.id, 3); };
+                            popupImg.addEventListener('load', onLoad);
+                        }
+                    }
+                }
             }
 
             overlay.classList.add('show');
@@ -80,6 +135,8 @@ document.addEventListener('DOMContentLoaded', () => {
             item.classList.remove('show');
         });
 
+        // cleanup magnifier glass when closing popup
+        document.querySelectorAll('.img-magnifier-glass').forEach(g => g.remove());
         overlay.classList.remove('show');
         globalPopup.classList.remove('show');
         document.documentElement.style.overflow = '';
@@ -202,4 +259,4 @@ function magnify(imgID, zoom) {
 }
 
 
-        
+

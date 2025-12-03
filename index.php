@@ -27,13 +27,14 @@ $result = $conn->query($sql);
 <header>
     <div class="header-container">
         <div class="header-content">
-            <img class="ua-logo" src="assets/images/ualogo.png">
-            <div class="nav">
-                <ul>
 
-                </ul>
-            </div>
+            <button id="openColofon" class="colofon-btn" type="button" aria-label="Open colofon"
+                title="Colofon">i</button>
+            <a href="https://hetutrechtsarchief.nl">
+                <img class="ua-logo" src="assets/images/ualogo.png">
+            </a>
         </div>
+
 </header>
 
 <body>
@@ -49,13 +50,10 @@ $result = $conn->query($sql);
                 <div class="card-inner">
                     <div class="card-front">
                         <!-- attach useful data-* attributes so JS can populate the global popup -->
-                        <img
-                          src="<?= htmlspecialchars($row['image']) ?>"
-                          alt="<?= htmlspecialchars($row['id']) ?>"
-                          data-id="<?= $row['id'] ?>"
-                          data-catalogus="<?= htmlspecialchars($row['catalogusnummer'] ?? '') ?>"
-                          data-beschrijving="<?= htmlspecialchars($row['beschrijving'] ?? '') ?>"
-                        >
+                        <img src="<?= htmlspecialchars($row['image']) ?>" alt="<?= htmlspecialchars($row['id']) ?>"
+                            data-id="<?= $row['id'] ?>"
+                            data-catalogus="<?= htmlspecialchars($row['catalogusnummer'] ?? '') ?>"
+                            data-beschrijving="<?= htmlspecialchars($row['beschrijving'] ?? '') ?>">
 
                         <?php while ($h = $hotspots->fetch_assoc()): ?>
                             <button class="hotspot"
@@ -72,10 +70,10 @@ $result = $conn->query($sql);
         <?php endwhile; ?>
     </div>
 
- 
+
     <div class="overlay" id="globalOverlay" aria-hidden="true"></div>
     <div id="globalPopup" class="popup" role="dialog" aria-modal="true" aria-hidden="true">
-       <img class="magnify">
+        <img class="magnify">
         <button id="closePopup" class="close" aria-label="Close">&times;</button>
         <button id="toggleMagnify" class="toggle-magnify" aria-label="Toggle Magnifier">🔍</button>
 
@@ -84,13 +82,16 @@ $result = $conn->query($sql);
             <?php while ($row = $result->fetch_assoc()): ?>
                 <div class="popup-item" data-id="<?= $row['id'] ?>">
                     <div class="img-magnifier-container">
-                    <img src="<?= htmlspecialchars($row['image']) ?>" alt="" style="max-width:100%; height:auto; display:block; margin-bottom:12px;">
+                        <img id="popup-img-<?= $row['id'] ?>" src="<?= htmlspecialchars($row['image']) ?>" alt=""
+                            style="max-width:100%; height:auto; display:block; margin-bottom:12px;">
                     </div>
                     <?php if (!empty($row['catalogusnummer'])): ?>
-                        <div style="margin-top:8px"><strong>Catalogusnummer:</strong> <?= htmlspecialchars($row['catalogusnummer']) ?></div>
+                        <div style="margin-top:8px"><strong>Catalogusnummer:</strong>
+                            <?= htmlspecialchars($row['catalogusnummer']) ?></div>
                     <?php endif; ?>
                     <?php if (!empty($row['beschrijving'])): ?>
-                        <div style="margin-top:8px"><strong>Beschrijving:</strong> <?= htmlspecialchars($row['beschrijving']) ?></div>
+                        <div style="margin-top:8px"><strong>Beschrijving:</strong> <?= htmlspecialchars($row['beschrijving']) ?>
+                        </div>
                     <?php else: ?>
                         <div style="margin-top:8px">No description available.</div>
                     <?php endif; ?>
@@ -99,13 +100,33 @@ $result = $conn->query($sql);
         </div>
     </div>
 
-    <!-- Hotspot Modal -->
     <div id="hotspotModal" class="modal">
         <div class="modal-content">
+            <div class="modal-text">
+                <b><label>Informatie:</label></b>
+                <p id="modalText"></p>
+                <div id="modalCatalog" style="display:none;">
+                    <b><label>Catalogusnummer:</label></b>
+                    <p id="modalTextCtl"></p>
+                </div>
+            </div>
+            <div class="modal-image">
+                <img id="modalImage" style="display:none; max-width:100%; height:auto;">
+            </div>
             <span id="closeModal" class="close">&times;</span>
-            <p id="modalText"></p>
-            <p id="modalTextCtl"></p>
-            <img id="modalImage" style="display:none; max-width:100%; height:auto;">
+        </div>
+    </div>
+
+    <div id="colofonModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-text">
+                <b><label>Colofon:</label></b>
+                <p><strong>Vervaardiger:</strong> Bos, J., tekenaar/graficus</p>
+                <p><strong>Datering:</strong> 1859</p>
+                <p><strong>Materiaalsoort:</strong> Prent</p>
+                <p><strong>Uitgever:</strong> Herfkens en Zoon, Wed., uitgever</p>
+            </div>
+            <span id="closeColofon" class="close">&times;</span>
         </div>
     </div>
 </body>

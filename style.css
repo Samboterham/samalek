@@ -1,4 +1,6 @@
-* {box-sizing: border-box;}
+* {
+    box-sizing: border-box;
+}
 
 body {
     background-color: rgba(255, 255, 255, 0.751);
@@ -13,6 +15,7 @@ body {
 header {
     background-color: rgb(215, 215, 215);
     max-height: 100%;
+    position: relative;
 }
 
 
@@ -31,18 +34,32 @@ header {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
+    
 }
 
 .header-content {
     height: 80px;
     display: flex;
-    justify-content: flex-end;
+    gap: 1000px;
+    justify-content: space-around;
 }
 
 .ua-logo {
-    width: 80px;
-    margin-right: 120px;
+    width: 90px;
+    margin-right: 20px;
+    margin-top: 10px;
+    display: block;
+    transform: scale(1);
+    transition: ease-in-out 0.2s;
 }
+.ua-logo:hover {
+    width: 90px;
+    margin-right: 20px;
+    margin-top: 10px;
+    display: block;
+    transform: scale(1.1);
+}
+
 
 .grid {
     display: flex;
@@ -57,6 +74,25 @@ header {
 
 }
 
+.colofon-btn {
+    margin-left: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,0,0,0.12);
+    background: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    cursor: pointer;
+    line-height: 1;
+    margin-top: 20px;
+    color: #222;
+    transition: background .12s ease, transform .08s ease;
+}
+.colofon-btn:hover { background: #f3f3f3; transform: translateY(-1px); }
+.colofon-btn:focus { outline: 3px solid rgba(0,0,0,0.12); }
 /* .grid::-webkit-scrollbar {
     display: none;
 } */
@@ -88,7 +124,7 @@ header {
     width: 25px;
     height: 25px;
     border-radius: 50%;
-    background: rgb(255, 179, 0);
+    background: #329c8c;
     cursor: pointer;
     border: 0px;
     transition: ease-in-out 0.5s;
@@ -105,10 +141,10 @@ header {
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    background: rgb(255, 179, 0);
+    background: #27766a;
     cursor: pointer;
     font-size: 30px;
-    box-shadow: rgba(192, 134, 0, 0.603) 0px 0px 0px 4px;
+    box-shadow: #2980738d 0px 0px 0px 4px;
 
 }
 
@@ -169,23 +205,48 @@ header {
 }
 
 
+
 .modal-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     background-color: #fff;
-    margin: 15% auto;
+    margin: 14% auto;
     padding: 20px;
     border-radius: 8px;
-    width: 300px;
+    width: 800px;
     max-width: 80%;
-    text-align: center;
+
+}
+
+.modal-text {
+    flex: 1;
+    padding-right: 20px;
+}
+
+.modal-image {
+    flex: 1;
+    text-align: right;
+}
+
+#modalText{
+    font-size: 20px;
 }
 
 .close {
-    float: right;
+position: relative;
+    top: -14px;
+    right: -9px;
     font-size: 24px;
     cursor: pointer;
-    margin-bottom: 10px;
     border: none;
     background-color: white;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
 }
 
 
@@ -241,7 +302,7 @@ header {
     position: absolute;
     top: 10px;
     right: 50px;
-    background: #007bff;
+    background: #27766a;;
     color: white;
     border: none;
     padding: 8px 12px;
@@ -252,20 +313,28 @@ header {
 }
 
 .toggle-magnify:hover {
-    background: #0056b3;
+     background: #27766a;;
 }
 
 .img-magnifier-container {
-  position: relative;
+    position: relative;
 }
 
 .img-magnifier-glass {
-  position: absolute;
-  border: 3px solid #000;
-  border-radius: 50%;
-  cursor: none;
-  /*Set the size of the magnifier glass:*/
-  width: 100px;
-  height: 100px;
+    position: absolute;
+    border: 3px solid #000;
+    border-radius: 50%;
+    cursor: none;
+    
+    width: 100px;
+    height: 100px;
 }
 
+
+#colofonModal .modal-content {
+    width: 420px;                
+    max-width: calc(100% - 40px); 
+    margin: 15% auto;              
+    padding: 16px;                
+    box-sizing: border-box;
+}
