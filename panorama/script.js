@@ -124,8 +124,8 @@ document.addEventListener('DOMContentLoaded', () => {
             globalPopup.classList.add('show');
             document.documentElement.style.overflow = 'hidden';
             document.body.style.overflow = 'hidden';
-            globalPopup.setAttribute('aria-hidden','false');
-            overlay.setAttribute('aria-hidden','false');
+            globalPopup.setAttribute('aria-hidden', 'false');
+            overlay.setAttribute('aria-hidden', 'false');
         });
     });
 
@@ -141,8 +141,8 @@ document.addEventListener('DOMContentLoaded', () => {
         globalPopup.classList.remove('show');
         document.documentElement.style.overflow = '';
         document.body.style.overflow = '';
-        globalPopup.setAttribute('aria-hidden','true');
-        overlay.setAttribute('aria-hidden','true');
+        globalPopup.setAttribute('aria-hidden', 'true');
+        overlay.setAttribute('aria-hidden', 'true');
     }
 
     if (closePopup) closePopup.addEventListener('click', closePopupFn);
@@ -184,79 +184,114 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 function magnify(imgID, zoom) {
-  var img = document.getElementById(imgID);
-  if (!img) return;
+    var img = document.getElementById(imgID);
+    if (!img) return;
 
-  // remove any previous glass for this image
-  const existing = img.parentElement.querySelector('.img-magnifier-glass');
-  if (existing) existing.remove();
+    // remove any previous glass for this image
+    const existing = img.parentElement.querySelector('.img-magnifier-glass');
+    if (existing) existing.remove();
 
-  var glass = document.createElement("DIV");
-  glass.setAttribute("class", "img-magnifier-glass");
-  img.parentElement.insertBefore(glass, img);
+    var glass = document.createElement("DIV");
+    glass.setAttribute("class", "img-magnifier-glass");
+    img.parentElement.insertBefore(glass, img);
 
-  // use displayed size for mapping so math stays consistent
-  function updateBackgroundSize() {
-    glass.style.backgroundImage = "url('" + img.src + "')";
-    glass.style.backgroundRepeat = "no-repeat";
-    glass.style.backgroundSize = (img.offsetWidth * zoom) + "px " + (img.offsetHeight * zoom) + "px";
-  }
-  updateBackgroundSize();
+    // use displayed size for mapping so math stays consistent
+    function updateBackgroundSize() {
+        glass.style.backgroundImage = "url('" + img.src + "')";
+        glass.style.backgroundRepeat = "no-repeat";
+        glass.style.backgroundSize = (img.offsetWidth * zoom) + "px " + (img.offsetHeight * zoom) + "px";
+    }
+    updateBackgroundSize();
 
-  var bw = 3;
-  var w = glass.offsetWidth / 2;
-  var h = glass.offsetHeight / 2;
+    var bw = 3;
+    var w = glass.offsetWidth / 2;
+    var h = glass.offsetHeight / 2;
 
-  // unified move handler for mouse/touch/pointer
-  function moveMagnifier(e) {
-    e.preventDefault();
-    var pos = getCursorPos(e);
-    var x = pos.x;
-    var y = pos.y;
-    // clamp so the glass stays inside the image
-    if (x > img.offsetWidth - (w / zoom)) x = img.offsetWidth - (w / zoom);
-    if (x < w / zoom) x = w / zoom;
-    if (y > img.offsetHeight - (h / zoom)) y = img.offsetHeight - (h / zoom);
-    if (y < h / zoom) y = h / zoom;
+    // unified move handler for mouse/touch/pointer
+    function moveMagnifier(e) {
+        e.preventDefault();
+        var pos = getCursorPos(e);
+        var x = pos.x;
+        var y = pos.y;
+        // clamp so the glass stays inside the image
+        if (x > img.offsetWidth - (w / zoom)) x = img.offsetWidth - (w / zoom);
+        if (x < w / zoom) x = w / zoom;
+        if (y > img.offsetHeight - (h / zoom)) y = img.offsetHeight - (h / zoom);
+        if (y < h / zoom) y = h / zoom;
 
-    // position glass relative to the container, accounting for image offset within container
-    var imgRect = img.getBoundingClientRect();
-    var containerRect = img.parentElement.getBoundingClientRect();
-    var imgOffsetX = imgRect.left - containerRect.left;
-    var imgOffsetY = imgRect.top - containerRect.top;
+        // position glass relative to the container, accounting for image offset within container
+        var imgRect = img.getBoundingClientRect();
+        var containerRect = img.parentElement.getBoundingClientRect();
+        var imgOffsetX = imgRect.left - containerRect.left;
+        var imgOffsetY = imgRect.top - containerRect.top;
 
-    glass.style.left = (imgOffsetX + x - w) + "px";
-    glass.style.top = (imgOffsetY + y - h) + "px";
+        glass.style.left = (imgOffsetX + x - w) + "px";
+        glass.style.top = (imgOffsetY + y - h) + "px";
 
-    // background position based on displayed coords (consistent with backgroundSize)
-    glass.style.backgroundPosition = "-" + ((x * zoom) - w + bw) + "px -" + ((y * zoom) - h + bw) + "px";
-  }
+        // background position based on displayed coords (consistent with backgroundSize)
+        glass.style.backgroundPosition = "-" + ((x * zoom) - w + bw) + "px -" + ((y * zoom) - h + bw) + "px";
+    }
 
-  function getCursorPos(e) {
-    // get image rect
-    var rect = img.getBoundingClientRect();
-    // decide coords based on event type
-    var clientX = (e.touches && e.touches[0]) ? e.touches[0].clientX : (e.clientX !== undefined ? e.clientX : (e.changedTouches && e.changedTouches[0] && e.changedTouches[0].clientX));
-    var clientY = (e.touches && e.touches[0]) ? e.touches[0].clientY : (e.clientY !== undefined ? e.clientY : (e.changedTouches && e.changedTouches[0] && e.changedTouches[0].clientY));
-    // relative inside the image
-    var x = clientX - rect.left;
-    var y = clientY - rect.top;
-    // optional clamp to [0..img.width/img.height]
-    x = Math.max(0, Math.min(x, rect.width));
-    y = Math.max(0, Math.min(y, rect.height));
-    return { x: x, y: y };
-  }
+    function getCursorPos(e) {
+        // get image rect
+        var rect = img.getBoundingClientRect();
+        // decide coords based on event type
+        var clientX = (e.touches && e.touches[0]) ? e.touches[0].clientX : (e.clientX !== undefined ? e.clientX : (e.changedTouches && e.changedTouches[0] && e.changedTouches[0].clientX));
+        var clientY = (e.touches && e.touches[0]) ? e.touches[0].clientY : (e.clientY !== undefined ? e.clientY : (e.changedTouches && e.changedTouches[0] && e.changedTouches[0].clientY));
+        // relative inside the image
+        var x = clientX - rect.left;
+        var y = clientY - rect.top;
+        // optional clamp to [0..img.width/img.height]
+        x = Math.max(0, Math.min(x, rect.width));
+        y = Math.max(0, Math.min(y, rect.height));
+        return { x: x, y: y };
+    }
 
-  // attach events — include mouse and touch
-  glass.addEventListener("mousemove", moveMagnifier);
-  img.addEventListener("mousemove", moveMagnifier);
-  glass.addEventListener("touchmove", moveMagnifier);
-  img.addEventListener("touchmove", moveMagnifier);
+    // attach events — include mouse and touch
+    glass.addEventListener("mousemove", moveMagnifier);
+    img.addEventListener("mousemove", moveMagnifier);
+    glass.addEventListener("touchmove", moveMagnifier);
+    img.addEventListener("touchmove", moveMagnifier);
 
-  // update on resize (image may change size when popup opens)
-  window.addEventListener('resize', updateBackgroundSize);
-  img.addEventListener('load', updateBackgroundSize);
+    // update on resize (image may change size when popup opens)
+    window.addEventListener('resize', updateBackgroundSize);
+    img.addEventListener('load', updateBackgroundSize);
+}
+let items = [];
+
+// Load items from database
+fetch("getItems.php")
+    .then(res => res.json())
+    .then(data => {
+        items = data;
+        console.log("Loaded items:", items);
+    });
+
+const searchButton = document.getElementById("submit");
+const searchText = document.getElementById("search");
+
+
+function searchForItem(query) {
+    query = query.trim();
+
+    if (!isNaN(query)) {
+        return document.getElementById(`card-${parseInt(query)}`);
+    }
+
+    for (let i = 0; i < items.length; i++) {
+        if (items[i].catalogusnummer.includes(query)) {
+            return document.getElementById(`card-${items[i].id - 1}`);
+        }
+    }
 }
 
+searchButton.addEventListener("click", () => {
+    const query = searchText.value;
+    const card = searchForItem(query);
+
+    if (card) {
+        card.scrollIntoView({ behavior: "smooth", block: "center" });
 
 
+    }
+});
