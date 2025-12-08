@@ -1,5 +1,12 @@
 <?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
 require 'conn.php';
+
+$uploadDir = 'assets/images/';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -7,7 +14,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = $_POST['id'];
     $catalogusnummer = $_POST['catalogusnummer'];
     $beschrijving = $_POST['beschrijving'];
-    $image = $_POST['image'];
+
+    // Handle main image upload
+    $image = $_POST['current_image'];
+    if (isset($_FILES['image_file']) && $_FILES['image_file']['error'] == UPLOAD_ERR_OK) {
+        $fileName = uniqid() . '_' . basename($_FILES['image_file']['name']);
+        $targetPath = $uploadDir . $fileName;
+        if (move_uploaded_file($_FILES['image_file']['tmp_name'], $targetPath)) {
+            $image = $targetPath;
+        }
+    }
 
     // Update main information
     try {

@@ -2,27 +2,46 @@
     box-sizing: border-box;
 }
 
+:root {
+    --color-primary: #247065;
+    --color-primary-light: #194e46;
+    --color-primary-dark: #1b5148;
+    --color-accent: #d4a574;
+    --color-accent-dark: #b8905a;
+    --color-light: #f5f5f5;
+    --color-light-variant: #f6faf9;
+    --color-white: #ffffff;
+    --color-text: #2c2c2c;
+    --color-border: #e0e0e0;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
 body {
-    background-color: #f5f5f5;
+    background-color: var(--color-light);
     padding: 0px;
     margin: 0px;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    overflow-y: hidden;
+    overflow-y: auto;
     overflow-x: auto;
-
+    font-family: var(--font-sans);
+    color: var(--color-text);
 }
 
 header {
-    background-color: rgb(225, 225, 225);
+    background-color: var(--color-light);
     max-height: 100%;
     position: relative;
 
 }
 
 footer{
-    background-color: rgb(225, 225, 225);
+    background-color: var(--color-light);
     height: 110px;
     display: flex;
 
@@ -138,7 +157,7 @@ footer{
     height: 30px;
     border-radius: 50%;
     border: 1px solid rgba(0, 0, 0, 0.12);
-    background: #329c8c;
+    background: var(--color-primary);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -147,7 +166,7 @@ footer{
     line-height: 1;
     border: none;
     margin-top: 20px;
-    color: #000000;
+    color: var(--color-text);
     transition: background .12s ease, transform .08s ease;
 }
 
@@ -158,7 +177,7 @@ footer{
     width: 220px;
     height: 30px;
     background: rgba(255, 255, 255, 0.85);
-    border: 2px solid red; /* tijdelijk rood */
+    border: 2px solid var(--color-accent); /* tijdelijk rood */
     border-radius: 4px;
     overflow: hidden;
     box-shadow: 0 2px 4px rgba(0,0,0,0.15);
@@ -176,7 +195,7 @@ footer{
 }
 
 .colofon-btn:hover {
-    background: #1e5e54;
+    background: var(--color-primary);
     transform: translateY(-1px);
 }
 
@@ -218,15 +237,15 @@ footer{
     width: 25px;
     height: 25px;
     border-radius: 50%;
-    background: #329c8c;
+    background: rgb(182, 7, 7);
     cursor: pointer;
     border: 0px;
     transition: ease-in-out 0.5s;
     font-size: 15px;
-    font-family: 'Poppins', sans-serif;
+    font-family: var(--font-sans);
     font-weight: 600;
     transform: scale(1);
-    box-shadow: black 0px 0px 20px 1px;
+    box-shadow: var(--color-text) 0px 0px 20px 1px;
 
 }
 
@@ -235,17 +254,17 @@ footer{
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    background: #27766a;
+    background: rgb(213, 8, 8);
     cursor: pointer;
     font-size: 30px;
-    box-shadow: #2980738d 0px 0px 0px 4px;
+    box-shadow: #dd65038d 0px 0px 0px 4px;
 
 }
 
 
 .btn-terug-icon {
-    background: #329c8c;
-    color: #000000;
+    background: var(--color-primary-light);
+    color: white;
     padding: 10px 20px;
     border-radius: 12px;
     display: inline-flex;
@@ -265,7 +284,7 @@ footer{
 }
 
 .btn-terug-icon:hover {
-    background: #1e5e54;
+    background: var(--color-primary);
     transform: translateY(-1px);
 }
 
@@ -279,7 +298,7 @@ footer{
 .plus::after {
     content: "";
     position: absolute;
-    background: rgb(0, 0, 0);
+    background: var(--color-text);
     border-radius: 4px;
 }
 
@@ -331,7 +350,7 @@ footer{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    background-color: #fff;
+    background-color: var(--color-white);
     margin: 14% auto;
     padding: 20px;
     border-radius: 8px;
@@ -341,7 +360,7 @@ footer{
 }
 
 #submit {
-    background-color: #329c8c;
+    background-color: var(--color-primary);
     width: 30px;
     height: 30px;
     border-radius: 50px;
@@ -353,7 +372,7 @@ footer{
 }
 
 #submit:hover {
-    background-color: #1e5e54;
+    background-color: var(--color-primary);
     transform: translateY(-1px);
 
 
@@ -382,7 +401,7 @@ footer{
     font-size: 24px;
     cursor: pointer;
     border: none;
-    background-color: white;
+    background-color: var(--color-white);
     width: 24px;
     height: 24px;
     display: flex;
@@ -399,7 +418,7 @@ footer{
 
 .info {
     border-radius: 50px;
-    background-color: blue;
+    background-color: var(--color-primary);
 
 }
 
@@ -415,7 +434,7 @@ footer{
     width: min(90vw, 900px);
     max-height: calc(100vh - 80px);
     padding: 18px;
-    background: #fff;
+    background: var(--color-white);
     border-radius: 10px;
     box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
     display: none;
@@ -444,8 +463,8 @@ footer{
     position: absolute;
     top: 10px;
     right: 50px;
-    background: #329c8c;
-    color: white;
+    background: var(--color-primary-light);
+    color: var(--color-white);
     border: none;
     padding: 8px 12px;
     border-radius: 5px;
@@ -455,7 +474,7 @@ footer{
 }
 
 .toggle-magnify:hover {
-    background: #27766a;
+    background: var(--color-primary);
     ;
 }
 
@@ -465,7 +484,7 @@ footer{
 
 .img-magnifier-glass {
     position: absolute;
-    border: 3px solid #000;
+    border: 3px solid var(--color-text);
     border-radius: 50%;
     cursor: none;
 
@@ -481,4 +500,173 @@ footer{
     padding: 16px;
     box-sizing: border-box;
 
+}
+
+/* Custom Dropdown Styles */
+.custom-dropdown {
+    position: relative;
+    width: 80px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.dropdown-selected {
+    background: var(--color-primary);
+    color: var(--color-white);
+    padding: 8px 12px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 600;
+    transition: background 0.2s ease;
+    min-height: 20px;
+}
+
+.dropdown-selected:hover {
+    background: var(--color-primary-dark);
+}
+
+.dropdown-arrow {
+    margin-left: 8px;
+    transition: transform 0.2s ease;
+    font-size: 12px;
+}
+
+.custom-dropdown.open .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.dropdown-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+    width: 100%;
+}
+
+.custom-dropdown.open .dropdown-options {
+    display: block;
+}
+
+.dropdown-option {
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    text-align: center;
+}
+
+.dropdown-option:hover {
+    background: var(--color-light);
+}
+
+.dropdown-option:first-child {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.dropdown-option:last-child {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+/* Search Button Styles */
+.search-btn {
+    background: var(--color-primary);
+    color: var(--color-white);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.2s ease;
+    margin-left: 10px;
+}
+
+.search-btn:hover {
+    background: var(--color-primary-dark);
+}
+
+/* Responsive Design for Dropdown */
+@media (max-width: 768px) {
+    .custom-dropdown {
+        width: 70px;
+    }
+
+    .dropdown-selected {
+        padding: 6px 8px;
+        font-size: 14px;
+    }
+
+    .dropdown-options {
+        max-height: 150px;
+    }
+
+    .dropdown-option {
+        padding: 6px 8px;
+        font-size: 14px;
+    }
+
+    .search-btn {
+        padding: 6px 8px;
+        font-size: 14px;
+        margin-left: 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .custom-dropdown {
+        width: 60px;
+    }
+
+    .dropdown-selected {
+        padding: 5px 6px;
+        font-size: 13px;
+    }
+
+    .dropdown-options {
+        max-height: 120px;
+    }
+
+    .dropdown-option {
+        padding: 5px 6px;
+        font-size: 13px;
+    }
+
+    .search-btn {
+        padding: 5px 6px;
+        font-size: 13px;
+        margin-left: 3px;
+    }
+
+    .jump-box label {
+        font-size: 14px;
+    }
+}
+
+.btn-bewerk {
+    color: #fff;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+    padding: 12px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    border: none;
+    font-weight: 600;
+    min-height: 44px; /* Touch-friendly */
+}
+
+.btn-bewerk:hover {
+    background: linear-gradient(135deg, var(--color-primary-light), var(--color-primary));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }

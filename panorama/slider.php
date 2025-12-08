@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Panorama</title>
+    <link rel="icon" type="image/png" href="Assets/images/ualogo.png">
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
 </head>
@@ -15,24 +16,25 @@ include 'assets/includes/slider-header.php'
     ?>
 
 <body>
-    <div class="grid">
+    <div class="grid" id="panoramaFotos">
+        <?php $page = 1; ?>
         <?php while ($row = $result->fetch_assoc()): ?>
 
-            <div id="card-<?= $row['id'] ?>"></div>
+            <div id="card-<?= $page ?>"></div>
             <?php
             $image_id = $row['id'];
             $sql_1 = "SELECT * FROM ua_extrainformatie WHERE id_hoofdInfo = $image_id";
             $hotspots = $conn->query($sql_1);
             ?>
 
-            <div class="card" id="card-<?= $row['id'] ?>">
+            <div class="card" id="card-<?= $page ?>">
                 <div class="card-inner">
                     <div class="card-front">
                         <img src="<?= htmlspecialchars($row['image']) ?>" alt="<?= htmlspecialchars($row['id']) ?>"
                             data-id="<?= $row['id'] ?>"
                             data-catalogus="<?= htmlspecialchars($row['catalogusnummer'] ?? '') ?>"
                             data-beschrijving="<?= htmlspecialchars($row['beschrijving'] ?? '') ?>">
-                        <?php echo "Pagina: " . htmlspecialchars($row['id']) ?>
+                        <?php echo "Pagina: " . $page ?>
                         <?php while ($h = $hotspots->fetch_assoc()): ?>
                             <button class="hotspot"
                                 style="left: <?= $h['punt_positie_x'] ?>%; top: <?= $h['punt_positie_y'] ?>%;"
@@ -49,9 +51,12 @@ include 'assets/includes/slider-header.php'
                     </div>
                 </div>
             </div>
+            <?php $page++; ?>
         <?php endwhile; ?>
     </div>
-
+                <div class="panorama-minimap" id="panoramaMinimap">
+                    <div class="panorama-minimap-viewport" id="panoramaMinimapViewport"></div>
+                </div>
 
     <div class="overlay" id="globalOverlay" aria-hidden="true"></div>
     <div id="globalPopup" class="popup" role="dialog" aria-modal="true" aria-hidden="true">
