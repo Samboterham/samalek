@@ -279,7 +279,7 @@ customDropdown.addEventListener('click', (e) => {
 dropdownOptions.addEventListener('click', (e) => {
     if (e.target.classList.contains('dropdown-option')) {
         const value = e.target.dataset.value;
-        dropdownSelected.textContent = value;
+        dropdownSelected.innerHTML = value + '<div class="dropdown-arrow">▼</div>';
         customDropdown.classList.remove('open');
     }
 });

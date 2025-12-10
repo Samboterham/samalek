@@ -9,8 +9,9 @@
                 <div class="jump-box">
                     <label>Kies een pagina:</label>
                     <div class="custom-dropdown" id="customDropdown">
-                        <div class="dropdown-selected" id="dropdownSelected">1</div>
-                        <div class="dropdown-arrow">▼</div>
+                        <div class="dropdown-selected" id="dropdownSelected">1
+                            <div class="dropdown-arrow">▼</div>
+                        </div>
                         <div class="dropdown-options" id="dropdownOptions">
                             <div class="dropdown-option" data-value="1">1</div>
                             <div class="dropdown-option" data-value="2">2</div>

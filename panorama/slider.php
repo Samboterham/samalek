@@ -34,7 +34,6 @@ include 'assets/includes/slider-header.php'
                             data-id="<?= $row['id'] ?>"
                             data-catalogus="<?= htmlspecialchars($row['catalogusnummer'] ?? '') ?>"
                             data-beschrijving="<?= htmlspecialchars($row['beschrijving'] ?? '') ?>">
-                        <?php echo "Pagina: " . $page ?>
                         <?php while ($h = $hotspots->fetch_assoc()): ?>
                             <button class="hotspot"
                                 style="left: <?= $h['punt_positie_x'] ?>%; top: <?= $h['punt_positie_y'] ?>%;"
