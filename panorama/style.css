@@ -175,27 +175,142 @@ box-shadow: 0 2px 10px rgba(0, 0, 0.7, 0.4);
 }
 
 .panorama-minimap {
-    position: absolute;
-    right: 15px;
-    bottom: 50px;
-    width: 220px;
-    height: 30px;
-    background: rgba(255, 255, 255, 0.85);
-    border: 2px solid var(--color-accent); /* tijdelijk rood */
-    border-radius: 4px;
-    overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    position: fixed;
+    right: clamp(16px, 4vw, 48px);
+    left: clamp(16px, 4vw, 48px);
+    bottom: clamp(16px, 4vw, 28px);
+    width: min(1560px, 95vw);
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(212, 165, 116, 0.45);
+    border-radius: 18px;
+    padding: 14px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     z-index: 2000;
 }
- 
+
+.panorama-minimap-track {
+    position: relative;
+    display: flex;
+    gap: 0;
+    height: 96px;
+    align-items: stretch;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.panorama-minimap-track::-webkit-scrollbar {
+    height: 6px;
+}
+
+.panorama-minimap-track::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.panorama-minimap-track::-webkit-scrollbar-thumb {
+    background: var(--color-accent);
+    border-radius: 3px;
+}
+
+.panorama-minimap-track::-webkit-scrollbar-thumb:hover {
+    background: var(--color-accent-dark);
+}
+
 .panorama-minimap-viewport {
     position: absolute;
-    top: 0;
-    bottom: 0;
+    top: 6px;
+    bottom: 6px;
     left: 0;
-    background: rgba(0, 0, 0, 0.35);
-    border-radius: 3px;
+    width: 4px;
+    background: var(--color-accent);
+    border: none;
+    border-radius: 5px;
     pointer-events: none;
+    transition: transform 0.2s ease;
+    transform: translateX(0);
+    z-index: 10;
+    box-shadow: 0 0 12px rgba(212, 165, 116, 0.6);
+}
+
+.panorama-minimap-thumb {
+    position: relative;
+    z-index: 2;
+    border: none;
+    border-radius: 0;
+    width: clamp(110px, 12vw, 220px);
+    height: 100%;
+    cursor: default;
+    box-shadow: none;
+    transition: filter 0.2s ease;
+    overflow: hidden;
+    display: block;
+    pointer-events: none;
+}
+
+.panorama-minimap-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+    display: block;
+}
+
+.panorama-minimap-thumb-number {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+    z-index: 3;
+}
+
+.panorama-minimap-thumb.active {
+    filter: brightness(1.1) saturate(1.05);
+}
+
+@media (max-width: 900px) {
+    .panorama-minimap {
+        left: 50%;
+        transform: translateX(-50%);
+        right: auto;
+        width: calc(100% - 32px);
+    }
+
+    .panorama-minimap-track {
+        grid-auto-columns: minmax(38px, 1fr);
+        height: 68px;
+    }
+
+    .panorama-minimap-thumb {
+        height: 56px;
+    }
+}
+
+@media (max-width: 500px) {
+    .panorama-minimap {
+        padding: 10px;
+        border-radius: 16px;
+    }
+
+    .panorama-minimap-track {
+        gap: 6px;
+    }
+
+    .panorama-minimap-thumb-number {
+        width: 14px;
+        height: 14px;
+        font-size: 7px;
+    }
 }
 
 .colofon-btn:hover {
@@ -296,31 +411,16 @@ box-shadow: 0 2px 10px rgba(0, 0, 0.7, 0.4);
     position: relative;
     width: 15px;
     height: 16px;
-}
-
-.plus::before,
-.plus::after {
-    content: "";
-    position: absolute;
-    background: var(--color-text);
-    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--color-text);
 }
 
 .plus::before {
-    width: 4px;
-    height: 16px;
-    left: 48%;
-    top: 0;
-    transform: translateX(-50%);
-}
-
-
-.plus::after {
-    width: 14px;
-    height: 4px;
-    left: 0;
-    top: 40%;
-    transform: translateY(-50%);
+    content: "𝓲";
 }
 
 .plus::after {
@@ -331,15 +431,25 @@ box-shadow: 0 2px 10px rgba(0, 0, 0.7, 0.4);
 }
 
 .modal {
-    display: none;
     position: absolute;
-    z-index: 1000;
+    z-index: 9990;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .18s ease, visibility .18s;
+}
+
+.modal.show {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
 
@@ -360,6 +470,8 @@ box-shadow: 0 2px 10px rgba(0, 0, 0.7, 0.4);
     border-radius: 8px;
     width: 800px;
     max-width: 80%;
+    z-index: 9999;
+    position: relative;
 
 }
 
@@ -392,6 +504,11 @@ box-shadow: 0 2px 10px rgba(0, 0, 0.7, 0.4);
 .modal-image {
     flex: 1;
     text-align: right;
+    border-radius: 5px;
+}
+
+#modalImage {
+    border-radius: 5px;
 }
 
 #modalText {

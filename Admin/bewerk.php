@@ -33,7 +33,7 @@ $hotspots = $stmtExtra->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="assets/images/ualogo.png">
+    <link rel="icon" type="image/png" href="assets/images/ua_favicon.png">
     <link rel="stylesheet" href="style.css">
     <title>Bewerk item</title>
 </head>
@@ -75,8 +75,11 @@ $hotspots = $stmtExtra->fetchAll(PDO::FETCH_ASSOC);
                                 <img class="img" src="<?= htmlspecialchars($Info['image']) ?>" alt="Huidige afbeelding">
                                 <span><?= basename($Info['image']) ?></span>
                             </div>
+                            <div id="main-image-preview" style="margin-bottom: 10px; display: none;">
+                                <img id="main-preview-img" src="" alt="Nieuwe afbeelding preview" style="max-width: 300px; max-height: 300px; border: 1px solid #ccc; border-radius: 5px;">
+                            </div>
                             <input type="file" id="image_file" name="image_file" accept="image/*">
-                            <label for="image_file" class="upload-btn">Kies nieuwe afbeelding</label>
+                            <label for="image_file" class="upload-btn">Kies Nieuwe Afbeelding</label>
                         </div>
                     </div>
                 </article>
@@ -102,8 +105,11 @@ $hotspots = $stmtExtra->fetchAll(PDO::FETCH_ASSOC);
                                                 <span><?= basename($extra['image']) ?></span>
                                             </div>
                                         <?php endif; ?>
+                                        <div id="image-preview-<?= $extra['id'] ?>" style="margin-bottom: 10px; display: none;">
+                                            <img id="preview-img-<?= $extra['id'] ?>" src="" alt="Image Preview" style="max-width: 300px; max-height: 300px; border: 1px solid #ccc; border-radius: 5px;">
+                                        </div>
                                         <input type="file" id="extra-image-<?= $extra['id'] ?>" name="extra_image_<?= $extra['id'] ?>" accept="image/*" style="display: none;">
-                                        <label for="extra-image-<?= $extra['id'] ?>" class="upload-btn">Kies nieuwe afbeelding</label>
+                                        <label for="extra-image-<?= $extra['id'] ?>" class="upload-btn">Kies Nieuwe Afbeelding</label>
                                     </div>
                                     <div class="hotspot-actions">
                                         <label>Positie X
@@ -122,10 +128,54 @@ $hotspots = $stmtExtra->fetchAll(PDO::FETCH_ASSOC);
                 </article>
             </section>
             <div class="editor-actions">
-                <button type="submit" name="opslaan" class="ops-btn">Wijzigingen opslaan</button>
-                <a href="hotspot.php?hoofd_id=<?= $Info['id'] ?>" class="ops-btn" style="text-align:center;">Hotspot toevoegen</a>
+                <button type="submit" name="opslaan" class="ops-btn">Wijzigingen Opslaan</button>
+                <a href="hotspot.php?hoofd_id=<?= $Info['id'] ?>" class="ops-btn" style="text-align:center;">Hotspot Toevoegen</a>
             </div>
         </form>
     </main>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle preview for main image input
+    const mainImageInput = document.getElementById('image_file');
+    const mainPreviewDiv = document.getElementById('main-image-preview');
+    const mainPreviewImg = document.getElementById('main-preview-img');
+
+    mainImageInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                mainPreviewImg.src = e.target.result;
+                mainPreviewDiv.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            mainPreviewDiv.style.display = 'none';
+        }
+    });
+
+    // Handle preview for each hotspot image input
+    const fileInputs = document.querySelectorAll('input[type="file"][id^="extra-image-"]');
+    fileInputs.forEach(input => {
+        input.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const hotspotId = event.target.id.split('-')[2]; // Extract ID from id="extra-image-{id}"
+            const previewDiv = document.getElementById('image-preview-' + hotspotId);
+            const previewImg = document.getElementById('preview-img-' + hotspotId);
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    previewDiv.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                previewDiv.style.display = 'none';
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>

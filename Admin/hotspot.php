@@ -25,7 +25,7 @@ $image = $info['image']; // image URL
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hotspot Toevoegen</title>
-    <link rel="icon" type="image/png" href="assets/images/ualogo.png">
+    <link rel="icon" type="image/png" href="assets/images/ua_favicon.png">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -42,7 +42,7 @@ $image = $info['image']; // image URL
         <a href="informatie.php" class="btn btn-bewerk">Terug naar overzicht</a>
     </header>
 
-<form method="POST" action="add_hotspot.php" class="bewerk">
+<form method="POST" action="add_hotspot.php" class="bewerk" enctype="multipart/form-data">
     <div class="bewerk_container">
         <input type="hidden" name="hoofd_id" value="<?php echo $id; ?>">
 
@@ -69,8 +69,12 @@ $image = $info['image']; // image URL
         </div><br>
 
         <div class="form-group">
-            <label for="extra_image">Extra Image URL</label>
-            <input type="text" class="form-control" id="extra_image" name="extra_image">
+            <label for="extra_image">Extra Afbeelding</label>
+            <div id="image-preview" style="margin-bottom: 10px; display: none;">
+                <img id="preview-img" src="" alt="Image Preview" style="max-width: 300px; max-height: 300px; border: 1px solid #ccc; border-radius: 5px;">
+            </div>
+            <input type="file" id="extra_image" name="extra_image" accept="image/*" style="display: none;">
+            <button type="button" class="btn btn-bewerk" onclick="document.getElementById('extra_image').click();">Kies Afbeelding</button>
         </div><br>
 
         <button type="submit" class="ops-btn" name="opslaan">Opslaan</button>
@@ -78,3 +82,19 @@ $image = $info['image']; // image URL
 </form>
 
 <script src="script.js"></script>
+<script>
+document.getElementById('extra_image').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const previewImg = document.getElementById('preview-img');
+            previewImg.src = e.target.result;
+            document.getElementById('image-preview').style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    } else {
+        document.getElementById('image-preview').style.display = 'none';
+    }
+});
+</script>

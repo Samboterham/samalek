@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $_SESSION['user_id'] = $user['id'];
                         $_SESSION['username'] = $username;
                         $success = true;
-                        header("Refresh: 2; url=crud.php");
+                        header("Refresh: 2; url=index.php");
                     } else {
                         $errors[] = 'Ongeldige gebruikersnaam of wachtwoord.';
                     }
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="icon" type="image/png" href="assets/images/ualogo.png">
+    <link rel="icon" type="image/png" href="assets/images/ua_favicon.png">
     <link rel="stylesheet" href="login.css">
     <script src="login.js" defer></script>
 </head>

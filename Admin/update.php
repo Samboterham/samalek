@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $fileName = uniqid() . '_' . basename($_FILES['image_file']['name']);
         $targetPath = $uploadDir . $fileName;
         if (move_uploaded_file($_FILES['image_file']['tmp_name'], $targetPath)) {
-            $image = $targetPath;
+            $image = '/samalek/Admin/' . $targetPath;
         }
     }
 
@@ -48,9 +48,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['extra']) && is_array($_POST['extra'])) {
         foreach ($_POST['extra'] as $hotspotId => $hotspotData) {
             $informatie = $hotspotData['informatie'] ?? '';
-            $hotspotImage = $hotspotData['image'] ?? '';
+            $hotspotImage = $hotspotData['current_image'] ?? '';
             $puntX = $hotspotData['punt_positie_x'] ?? '';
             $puntY = $hotspotData['punt_positie_y'] ?? '';
+
+            // Handle hotspot image upload
+            $fileKey = 'extra_image_' . $hotspotId;
+            if (isset($_FILES[$fileKey]) && $_FILES[$fileKey]['error'] === UPLOAD_ERR_OK) {
+                $upload_dir = '../panorama/Assets/images/';
+                $file_name = time() . '_' . basename($_FILES[$fileKey]['name']);
+                $target_file = $upload_dir . $file_name;
+
+                $check = getimagesize($_FILES[$fileKey]['tmp_name']);
+                if ($check !== false) {
+                    if (move_uploaded_file($_FILES[$fileKey]['tmp_name'], $target_file)) {
+                        $hotspotImage = '/samalek/panorama/Assets/images/' . $file_name;
+                    }
+                }
+            }
 
             try {
                 $stmtHotspot = $pdo->prepare("

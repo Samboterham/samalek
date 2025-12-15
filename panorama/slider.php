@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panorama</title>
-    <link rel="icon" type="image/png" href="Assets/images/ualogo.png">
+    <link rel="icon" type="image/png" href="Assets/images/ua_favicon.png">
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
 </head>
@@ -53,9 +53,11 @@ include 'assets/includes/slider-header.php'
             <?php $page++; ?>
         <?php endwhile; ?>
     </div>
-                <div class="panorama-minimap" id="panoramaMinimap">
-                    <div class="panorama-minimap-viewport" id="panoramaMinimapViewport"></div>
-                </div>
+    <div class="panorama-minimap" id="panoramaMinimap">
+        <div class="panorama-minimap-track" id="panoramaMinimapTrack">
+            <div class="panorama-minimap-viewport" id="panoramaMinimapViewport"></div>
+        </div>
+    </div>
 
     <div class="overlay" id="globalOverlay" aria-hidden="true"></div>
     <div id="globalPopup" class="popup" role="dialog" aria-modal="true" aria-hidden="true">

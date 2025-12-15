@@ -13,7 +13,7 @@ require 'conn.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="assets/images/ualogo.png">
+    <link rel="icon" type="image/png" href="assets/images/ua_favicon.png">
     <link rel="stylesheet" href="style.css">
     <title>Admin</title>
 </head>
@@ -44,18 +44,18 @@ require 'conn.php';
             <ol class="progress-steps">
                 <li>
                     <span class="step-label">Stap 1</span>
-                    <h3>Catalogus openen</h3>
+                    <h3>Catalogus Openen</h3>
                     <p>Klik op <strong>Open catalogus</strong> om de lijst in <code>informatie.php</code> te openen en selecteer het item dat je wil bijwerken.</p>
                 </li>
                 <li>
                     <span class="step-label">Stap 2</span>
-                    <h3>Gegevens bewerken</h3>
+                    <h3>Gegevens Bewerken</h3>
                     <p>Gebruik <strong>Bewerk</strong> om beschrijving, catalogusnummer en hoofdafbeelding te actualiseren. Controleer velden op spelling voordat je opslaat.</p>
                 </li>
                 <li>
                     <span class="step-label">Stap 3</span>
-                    <h3>Hotspots beheren</h3>
-                    <p>Kies <strong>Hotspot toevoegen</strong> of bewerk bestaande punten om positie en tekst te verfijnen. Gebruik percentages zodat de positie overeenkomt met de panoramafoto.</p>
+                    <h3>Hotspots Beheren</h3>
+                    <p>Kies <strong>Hotspot Toevoegen</strong> of bewerk bestaande punten om positie en tekst te verfijnen. Gebruik percentages zodat de positie overeenkomt met de panoramafoto.</p>
                 </li>
                 <li>
                     <span class="step-label">Stap 4</span>

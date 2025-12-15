@@ -7,7 +7,7 @@
                 <button id="openColofon" class="colofon-btn" type="button" aria-label="Open colofon"
                     title="Colofon">i</button>
                 <div class="jump-box">
-                    <label>Kies een pagina:</label>
+                    <label>Kies een Pagina:</label>
                     <div class="custom-dropdown" id="customDropdown">
                         <div class="dropdown-selected" id="dropdownSelected">1
                             <div class="dropdown-arrow">▼</div>

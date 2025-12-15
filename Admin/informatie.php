@@ -23,7 +23,7 @@ $stmt = $pdo->query("SELECT * FROM ua_informatie");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Informatie</title>
-    <link rel="icon" type="image/png" href="assets/images/ualogo.png">
+    <link rel="icon" type="image/png" href="assets/images/ua_favicon.png">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -37,7 +37,7 @@ $stmt = $pdo->query("SELECT * FROM ua_informatie");
                 <strong>Overzicht</strong>
             </div>
         </div>
-        <a href="crud.php" class="btn btn-bewerk">Terug</a>
+        <a href="index.php" class="btn btn-bewerk">Terug</a>
     </header>
 <div class="container">
     <h1>UA Informatie</h1>

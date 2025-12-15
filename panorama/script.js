@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (modalCatalog) modalCatalog.style.display = modalTextCtl.textContent ? 'block' : 'none';
 
-            modal.style.display = 'block';
+            modal.classList.add('show');
             document.documentElement.style.overflow = 'hidden';
             document.body.style.overflow = 'hidden';
         });
@@ -37,11 +37,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     closeModal.addEventListener('click', () => {
-        modal.style.display = 'none';
+        modal.classList.remove('show');
     });
 
     modal.addEventListener('click', (e) => {
-        if (!e.target.closest('.modal-content')) modal.style.display = 'none';
+        if (!e.target.closest('.modal-content')) modal.classList.remove('show');
     });
 
     // Colofon modal functionality
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (openColofon && colofonModal) {
         openColofon.addEventListener('click', () => {
-            colofonModal.style.display = 'block';
+            colofonModal.classList.add('show');
             document.documentElement.style.overflow = 'hidden';
             document.body.style.overflow = 'hidden';
         });
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (colofonModal) {
         colofonModal.addEventListener('click', (e) => {
             if (!e.target.closest('.modal-content')) {
-                colofonModal.style.display = 'none';
+                colofonModal.classList.remove('show');
                 document.documentElement.style.overflow = '';
                 document.body.style.overflow = '';
             }
@@ -309,51 +309,144 @@ searchButton.addEventListener("click", () => {
 
 document.addEventListener('DOMContentLoaded', function () {
     const pano = document.getElementById('panoramaFotos');
-    const minimap = document.getElementById('panoramaMinimap');
+    const minimapTrack = document.getElementById('panoramaMinimapTrack');
     const viewport = document.getElementById('panoramaMinimapViewport');
- 
-    if (!pano || !minimap || !viewport) {
+
+    if (!pano || !minimapTrack || !viewport) {
         console.warn('Panorama of minimap elementen niet gevonden.');
         return;
     }
- 
-    function updateMinimap() {
-        const scrollWidth = pano.scrollWidth;
-        const clientWidth = pano.clientWidth;
-        const scrollLeft = pano.scrollLeft;
- 
-        if (scrollWidth <= 0) return;
- 
-        const minimapWidth = minimap.clientWidth;
- 
-        const ratioVisible = clientWidth / scrollWidth;
-        const viewportWidth = minimapWidth * ratioVisible;
- 
-        const ratioLeft = scrollLeft / scrollWidth;
-        const viewportLeft = minimapWidth * ratioLeft;
- 
-        viewport.style.width = viewportWidth + 'px';
-        viewport.style.left = viewportLeft + 'px';
+
+    const cards = Array.from(pano.querySelectorAll('.card'));
+    const minimapThumbs = [];
+
+    function positionIndicator(thumbElement) {
+        if (!viewport || !thumbElement) return;
+        const indicatorWidth = viewport.offsetWidth || 4;
+        const visibleLeft = thumbElement.offsetLeft - minimapTrack.scrollLeft;
+        const center = visibleLeft + thumbElement.offsetWidth / 2;
+        const maxOffset = minimapTrack.clientWidth - indicatorWidth;
+        const offset = Math.max(0, Math.min(center - indicatorWidth / 2, maxOffset));
+        viewport.style.transform = `translateX(${offset}px)`;
+    }
+
+    function ensureThumbVisible(thumbElement) {
+        if (!thumbElement) return;
+        const thumbLeft = thumbElement.offsetLeft;
+        const thumbRight = thumbLeft + thumbElement.offsetWidth;
+        const viewLeft = minimapTrack.scrollLeft;
+        const viewRight = viewLeft + minimapTrack.clientWidth;
+
+        if (thumbLeft < viewLeft) {
+            minimapTrack.scrollTo({ left: thumbLeft, behavior: 'smooth' });
+        } else if (thumbRight > viewRight) {
+            minimapTrack.scrollTo({ left: thumbRight - minimapTrack.clientWidth, behavior: 'smooth' });
+        }
+    }
+
+    function setActiveThumb(cardId) {
+        let activeThumb = null;
+        minimapThumbs.forEach(({ id, element }) => {
+            const isActive = id === cardId;
+            element.classList.toggle('active', isActive);
+            if (isActive) activeThumb = element;
+        });
+        if (activeThumb) {
+            ensureThumbVisible(activeThumb);
+            positionIndicator(activeThumb);
+        }
+    }
+
+    function syncActiveThumb() {
+        if (!cards.length) return;
+        const center = pano.scrollLeft + pano.clientWidth / 2;
+        let closest = cards[0];
+        let smallestDelta = Math.abs((cards[0].offsetLeft + cards[0].clientWidth / 2) - center);
+
+        for (let i = 1; i < cards.length; i++) {
+            const card = cards[i];
+            const cardCenter = card.offsetLeft + card.clientWidth / 2;
+            const delta = Math.abs(cardCenter - center);
+            if (delta < smallestDelta) {
+                smallestDelta = delta;
+                closest = card;
+            }
+        }
+
+        setActiveThumb(closest.id);
+    }
+
+    if (cards.length) {
+        cards.forEach((card, index) => {
+            const sourceImg = card.querySelector('.card-front img');
+            if (!sourceImg) return;
+
+            const thumb = document.createElement('div');
+            thumb.className = 'panorama-minimap-thumb';
+            thumb.dataset.target = card.id;
+            const pageNumber = index + 1;
+            const labelValue = sourceImg.dataset.catalogus || sourceImg.dataset.beschrijving || pageNumber;
+            thumb.setAttribute('aria-label', `Miniatuur van afbeelding ${labelValue}`);
+
+            const thumbImg = document.createElement('img');
+            thumbImg.src = sourceImg.src;
+            thumbImg.alt = `Thumbnail ${pageNumber}`;
+            thumbImg.loading = 'lazy';
+
+            const numberOverlay = document.createElement('span');
+            numberOverlay.className = 'panorama-minimap-thumb-number';
+            numberOverlay.textContent = pageNumber;
+
+            thumb.appendChild(thumbImg);
+            thumb.appendChild(numberOverlay);
+
+            minimapTrack.appendChild(thumb);
+            minimapThumbs.push({ id: card.id, element: thumb, card });
+        });
+    }
+
+    function focusCard(card) {
+        if (!card) return;
+        const cardCenter = card.offsetLeft + card.clientWidth / 2;
+        const target = cardCenter - pano.clientWidth / 2;
+        const maxScroll = Math.max(pano.scrollWidth - pano.clientWidth, 0);
+        const nextScroll = Math.max(0, Math.min(target, maxScroll));
+        pano.scrollTo({ left: nextScroll, behavior: 'smooth' });
     }
  
-    pano.addEventListener('scroll', updateMinimap);
-    window.addEventListener('resize', updateMinimap);
- 
-    minimap.addEventListener('click', function (e) {
-        const rect = minimap.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const percentage = x / minimap.clientWidth;
- 
-        const targetScroll = percentage * pano.scrollWidth - (pano.clientWidth / 2);
- 
-        const maxScroll = pano.scrollWidth - pano.clientWidth;
-        const newScrollLeft = Math.max(0, Math.min(targetScroll, maxScroll));
- 
-        pano.scrollTo({
-            left: newScrollLeft,
-            behavior: 'smooth'
+    minimapTrack.addEventListener('click', function (e) {
+        const rect = minimapTrack.getBoundingClientRect();
+        const clickX = e.clientX - rect.left + minimapTrack.scrollLeft;
+        let nearest = null;
+        let smallestDelta = Infinity;
+
+        minimapThumbs.forEach((thumb) => {
+            const thumbCenter = thumb.element.offsetLeft + thumb.element.offsetWidth / 2;
+            const delta = Math.abs(thumbCenter - clickX);
+            if (delta < smallestDelta) {
+                smallestDelta = delta;
+                nearest = thumb;
+            }
         });
+
+        if (nearest && nearest.card) {
+            focusCard(nearest.card);
+        }
     });
- 
-    updateMinimap();
+
+    function updateMinimap() {
+        // Proportional scroll like a collage
+        const sliderScrollWidth = pano.scrollWidth - pano.clientWidth;
+        const trackScrollWidth = minimapTrack.scrollWidth - minimapTrack.clientWidth;
+        if (sliderScrollWidth > 0 && trackScrollWidth > 0) {
+            const ratio = pano.scrollLeft / sliderScrollWidth;
+            minimapTrack.scrollLeft = ratio * trackScrollWidth;
+        }
+        syncActiveThumb();
+    }
+
+    syncActiveThumb();
+
+    // Add scroll event listener to panorama to sync minimap
+    pano.addEventListener('scroll', updateMinimap);
 });
