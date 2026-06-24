@@ -24,7 +24,7 @@ if (!$Info) {
 }
 
 
-$stmtExtra = $pdo->prepare("SELECT * FROM ua_extraInformatie WHERE id_hoofdInfo = :id");
+$stmtExtra = $pdo->prepare("SELECT * FROM ua_extrainformatie WHERE id_hoofdInfo = :id");
 $stmtExtra->execute([':id' => $id]);
 $hotspots = $stmtExtra->fetchAll(PDO::FETCH_ASSOC);
 ?>

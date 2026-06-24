@@ -1,4 +1,9 @@
 <?php
+
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+
 session_start();
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -10,6 +15,7 @@ require 'conn.php';
 
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,6 +23,7 @@ require 'conn.php';
     <link rel="stylesheet" href="style.css">
     <title>Admin</title>
 </head>
+
 <body>
     <header class="admin-header">
         <div class="branding">
@@ -33,34 +40,40 @@ require 'conn.php';
     <main class="dashboard">
         <section class="dashboard-hero card">
             <h1>Beheer catalogusitems en hotspots stap voor stap</h1>
-            <p class="lead">Gebruik dit overzicht om snel naar de juiste onderdelen te navigeren en volg de workflow zodat de panoramaviewer altijd up-to-date blijft.</p>
+            <p class="lead">Gebruik dit overzicht om snel naar de juiste onderdelen te navigeren en volg de workflow
+                zodat de panoramaviewer altijd up-to-date blijft.</p>
             <div class="cta-group">
                 <a href="informatie.php" class="btn btn-bewerk">Open catalogus</a>
                 <div class="session-note">
                     <span class="badge">Tip</span>
-                    <p>Werk item voor item af en keer pas terug naar dit scherm als alle wijzigingen zijn opgeslagen.</p>
+                    <p>Werk item voor item af en keer pas terug naar dit scherm als alle wijzigingen zijn opgeslagen.
+                    </p>
                 </div>
             </div>
             <ol class="progress-steps">
                 <li>
                     <span class="step-label">Stap 1</span>
                     <h3>Catalogus Openen</h3>
-                    <p>Klik op <strong>Open catalogus</strong> om de lijst in <code>informatie.php</code> te openen en selecteer het item dat je wil bijwerken.</p>
+                    <p>Klik op <strong>Open catalogus</strong> om de lijst in <code>informatie.php</code> te openen en
+                        selecteer het item dat je wil bijwerken.</p>
                 </li>
                 <li>
                     <span class="step-label">Stap 2</span>
                     <h3>Gegevens Bewerken</h3>
-                    <p>Gebruik <strong>Bewerk</strong> om beschrijving, catalogusnummer en hoofdafbeelding te actualiseren. Controleer velden op spelling voordat je opslaat.</p>
+                    <p>Gebruik <strong>Bewerk</strong> om beschrijving, catalogusnummer en hoofdafbeelding te
+                        actualiseren. Controleer velden op spelling voordat je opslaat.</p>
                 </li>
                 <li>
                     <span class="step-label">Stap 3</span>
                     <h3>Hotspots Beheren</h3>
-                    <p>Kies <strong>Hotspot Toevoegen</strong> of bewerk bestaande punten om positie en tekst te verfijnen. Gebruik percentages zodat de positie overeenkomt met de panoramafoto.</p>
+                    <p>Kies <strong>Hotspot Toevoegen</strong> of bewerk bestaande punten om positie en tekst te
+                        verfijnen. Gebruik percentages zodat de positie overeenkomt met de panoramafoto.</p>
                 </li>
                 <li>
                     <span class="step-label">Stap 4</span>
                     <h3>Validatie</h3>
-                    <p>Controleer het resultaat in de panoramaviewer en verifieer of alle hotspots correct openen voordat je naar het volgende item gaat.</p>
+                    <p>Controleer het resultaat in de panoramaviewer en verifieer of alle hotspots correct openen
+                        voordat je naar het volgende item gaat.</p>
                 </li>
             </ol>
         </section>
@@ -70,13 +83,15 @@ require 'conn.php';
                 <ul>
                     <li>Werk catalogusnummers volgens het afgesproken patroon <strong>UA-XX-###</strong> bij.</li>
                     <li>Gebruik duidelijke, korte beschrijvingen van maximaal 200 tekens.</li>
-                    <li>Controleer of nieuwe afbeeldingen via <strong>Bestand kiezen</strong> worden geüpload vóór het opslaan.</li>
+                    <li>Controleer of nieuwe afbeeldingen via <strong>Bestand kiezen</strong> worden geüpload vóór het
+                        opslaan.</li>
                 </ul>
             </article>
             <article class="card guidance-card">
                 <h3>Hotspots</h3>
                 <ul>
-                    <li>Gebruik <strong>punt_positie_x</strong> en <strong>punt_positie_y</strong> waarden tussen 0 en 100.</li>
+                    <li>Gebruik <strong>punt_positie_x</strong> en <strong>punt_positie_y</strong> waarden tussen 0 en
+                        100.</li>
                     <li>Houd teksten kort en beschrijvend zodat modals overzichtelijk blijven.</li>
                     <li>Verwijder oude hotspots die niet meer zichtbaar moeten zijn.</li>
                 </ul>
@@ -117,8 +132,10 @@ require 'conn.php';
                     </ul>
                 </div>
             </div>
-            <p class="footer-note">Probleem gevonden? Noteer het ID van het item en deel het met het team zodat het snel kan worden opgelost.</p>
+            <p class="footer-note">Probleem gevonden? Noteer het ID van het item en deel het met het team zodat het snel
+                kan worden opgelost.</p>
         </section>
     </main>
 </body>
+
 </html>

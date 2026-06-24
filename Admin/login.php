@@ -30,6 +30,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $db_password = "";
         $dbname = "ua_database";
 
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' || preg_match('/^192\.168\.2/', $_SERVER['SERVER_ADDR'])) {
+            $servername = "localhost";
+            $username = "root";
+            $password = "";
+            $dbname = "ua_database";
+        } else {
+            $servername = "localhost";
+            $db_username = "u240457_ua_database";
+            $db_password = "LtUWcXPwKb3YZFCjBPjB";
+            $dbname = "u240457_ua_database";
+        }
+
         $conn = new mysqli($servername, $db_username, $db_password, $dbname);
         if ($conn->connect_error) {
             $errors[] = "Databaseverbinding mislukt: " . $conn->connect_error;
@@ -103,7 +115,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <form id="loginForm" method="POST" action="login.php" novalidate>
                 <div class="form-group">
                     <label for="username">Gebruikersnaam</label>
-                    <input type="text" id="username" name="username" placeholder="Voer uw gebruikersnaam in" value="<?= htmlspecialchars($username ?? '') ?>" required>
+                    <input type="text" id="username" name="username" placeholder="Voer uw gebruikersnaam in"
+                        value="<?= htmlspecialchars($username ?? '') ?>" required>
                     <span class="error-text" id="username-error"></span>
                 </div>
 

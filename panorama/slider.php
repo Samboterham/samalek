@@ -12,10 +12,10 @@
 
 <?php
 require 'conn.php';
-include 'assets/includes/slider-header.php'
-    ?>
+?>
 
 <body>
+    <?php include 'assets/includes/slider-header.php' ?>
     <div class="grid" id="panoramaFotos">
         <?php $page = 1; ?>
         <?php while ($row = $result->fetch_assoc()): ?>
@@ -35,6 +35,7 @@ include 'assets/includes/slider-header.php'
                             data-catalogus="<?= htmlspecialchars($row['catalogusnummer'] ?? '') ?>"
                             data-beschrijving="<?= htmlspecialchars($row['beschrijving'] ?? '') ?>">
                         <?php while ($h = $hotspots->fetch_assoc()): ?>
+                              
                             <button class="hotspot"
                                 style="left: <?= $h['punt_positie_x'] ?>%; top: <?= $h['punt_positie_y'] ?>%;"
                                 data-text="<?= htmlspecialchars($h['informatie']) ?>"
@@ -123,8 +124,7 @@ include 'assets/includes/slider-header.php'
 
 </body>
 <script>
-    var items = <?php echo json_encode($rows); ?>;
-    console.log(items);
+   
 
 </script>
 
